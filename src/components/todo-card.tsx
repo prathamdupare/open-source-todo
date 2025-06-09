@@ -2,7 +2,7 @@
 
 import ReactMarkdown from 'react-markdown';
 import { TodoItem } from '@/lib/todos';
-import { Calendar, Edit3 } from 'lucide-react';
+import { Edit3 } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useState } from 'react';
 
@@ -10,8 +10,27 @@ interface TodoCardProps {
   todo: TodoItem;
 }
 
+function formatDateFromSlug(slug: string) {
+  // Extract date from filename like "2024-12-19"
+  const dateMatch = slug.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (!dateMatch) return { day: '', month: '', year: '' };
+  
+  const [, year, month, day] = dateMatch;
+  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  
+  return {
+    day: day,
+    month: monthNames[date.getMonth()],
+    year: year
+  };
+}
+
 export function TodoCard({ todo }: TodoCardProps) {
   const [showDialog, setShowDialog] = useState(false);
+  const { day, month, year } = formatDateFromSlug(todo.slug);
 
   const handleEditClick = () => {
     setShowDialog(true);
@@ -25,21 +44,27 @@ export function TodoCard({ todo }: TodoCardProps) {
     <>
       <Card className="border-2 border-gray-700/50 bg-gray-900/80 backdrop-blur-sm transition-all hover:bg-gray-900/90 hover:shadow-lg hover:shadow-purple-500/10">
         <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-100">{todo.title}</h3>
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={handleEditClick}
-                className="p-1 rounded hover:bg-gray-700/50 transition-colors text-gray-500 hover:text-gray-300"
-                title="Edit todo"
-              >
-                <Edit3 className="h-3 w-3" />
-              </button>
-              <div className="flex items-center space-x-2 text-sm text-gray-400">
-                <Calendar className="h-4 w-4" />
-                <span className="font-mono">{todo.date}</span>
+          {/* Date Section at Top */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center space-x-2">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-400 font-mono leading-none">{day}</div>
+                <div className="text-xs text-cyan-400 font-mono uppercase tracking-wider">{month}</div>
               </div>
+              <div className="text-xs text-gray-500 font-mono">{year}</div>
             </div>
+            <button
+              onClick={handleEditClick}
+              className="p-1 rounded hover:bg-gray-700/50 transition-colors text-gray-500 hover:text-gray-300"
+              title="Edit todo"
+            >
+              <Edit3 className="h-3 w-3" />
+            </button>
+          </div>
+          
+          {/* Title */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-100">{todo.title}</h3>
           </div>
         </CardHeader>
         
@@ -52,7 +77,7 @@ export function TodoCard({ todo }: TodoCardProps) {
                 h3: ({ children }) => <h3 className="text-sm font-medium mb-1 mt-2 text-cyan-300">{children}</h3>,
                 ul: ({ children }) => <ul className="list-none space-y-1 ml-0">{children}</ul>,
                 ol: ({ children }) => <ol className="list-decimal list-inside space-y-1 text-gray-300">{children}</ol>,
-                li: ({ children, node }) => {
+                li: ({ children }) => {
                   const content = String(children);
                   if (content.includes('[ ]')) {
                     return <li className="text-sm flex items-center space-x-2">
@@ -99,13 +124,13 @@ export function TodoCard({ todo }: TodoCardProps) {
               </h3>
               
               <p className="text-sm text-gray-300 font-mono mb-4 leading-relaxed">
-                Nice try! But this isn't editable. Even Pratham edits all these todos in his precious neovim and then pushes to GitHub.
+                Nice try! But this isn&apos;t editable. Even Pratham edits all these todos in his precious neovim and then pushes to GitHub.
               </p>
               
               <div className="text-xs text-gray-500 font-mono mb-4 space-y-1">
                 <p><span className="text-cyan-400">$</span> cd ~/todos</p>
-                <p><span className="text-cyan-400">$</span> nvim {todo.date}.md</p>
-                <p><span className="text-cyan-400">$</span> git add . && git commit -m "updated todos"</p>
+                <p><span className="text-cyan-400">$</span> nvim {todo.slug}.md</p>
+                <p><span className="text-cyan-400">$</span> git add . && git commit -m &quot;updated todos&quot;</p>
                 <p><span className="text-purple-400"># </span>pretty inefficient right??</p>
               </div>
               

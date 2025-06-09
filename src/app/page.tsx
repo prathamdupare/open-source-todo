@@ -7,8 +7,8 @@ export default function Home() {
   const todos = getTodos();
 
   const easterEggs = [
-    "Don't worry, you can add any tasks! 📝",
-    "This doesn't even have a backend 🤷‍♂️",
+    "Don&apos;t worry, you can add any tasks! 📝",
+    "This doesn&apos;t even have a backend 🤷‍♂️",
     "Pratham edits all these todos in his neovim and then pushes to github - pretty inefficient right??",
     "Powered by markdown files and procrastination ☕",
     "No databases were harmed in the making of this app 🗃️",
@@ -41,7 +41,7 @@ export default function Home() {
                 <FileText className="h-8 w-8 text-purple-400" />
               </div>
               <h1 className="text-4xl font-bold text-gray-100 font-mono">
-                <span className="text-purple-400">Pratham's</span> Open Source Todo List
+                <span className="text-purple-400">Pratham&apos;s</span> Open Source Todo List
               </h1>
             </div>
             <p className="text-lg text-gray-400 font-mono mb-2">
@@ -125,7 +125,7 @@ export default function Home() {
               </h3>
               <p className="text-sm text-gray-500 font-mono mb-4">
                 <span className="text-cyan-400">$ </span>
-                mkdir todo && echo "# My First Todo" {'>'}todo/$(date +%Y-%m-%d).md
+                mkdir todo && echo &quot;# My First Todo&quot; {'>'}todo/$(date +%Y-%m-%d).md
               </p>
               <p className="text-xs text-gray-600 font-mono italic">
                 Pro tip: Pratham usually just creates files in neovim like a caveman 🦣

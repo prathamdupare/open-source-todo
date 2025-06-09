@@ -5,7 +5,6 @@ import matter from 'gray-matter';
 export interface TodoItem {
   slug: string;
   title: string;
-  date: string;
   content: string;
 }
 
@@ -28,16 +27,14 @@ export function getTodos(): TodoItem[] {
       return {
         slug: name.replace(/\.md$/, ''),
         title: data.title || name.replace(/\.md$/, ''),
-        date: data.date || '',
         content,
       };
     });
 
-  // Sort by date (newest first)
+  // Sort by date extracted from filename (newest first)
   return allTodos.sort((a, b) => {
-    if (a.date && b.date) {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    }
-    return 0;
+    const dateA = a.slug.match(/(\d{4}-\d{2}-\d{2})/)?.[1] || '';
+    const dateB = b.slug.match(/(\d{4}-\d{2}-\d{2})/)?.[1] || '';
+    return dateB.localeCompare(dateA);
   });
 } 
