@@ -80,13 +80,13 @@ export function TodoCard({ todo }: TodoCardProps) {
                 li: ({ children }) => {
                   const content = String(children);
                   if (content.includes('[ ]')) {
-                    return <li className="text-sm flex items-center space-x-2">
-                      <span className="text-red-400">○</span>
+                    return <li className="text-sm flex items-start space-x-2">
+                      <span className="text-red-400 mt-0.5">○</span>
                       <span className="text-gray-300">{content.replace(/\[\s*\]\s*/, '')}</span>
                     </li>;
                   } else if (content.includes('[x]')) {
-                    return <li className="text-sm flex items-center space-x-2">
-                      <span className="text-green-400">✓</span>
+                    return <li className="text-sm flex items-start space-x-2">
+                      <span className="text-green-400 mt-0.5">✓</span>
                       <span className="text-gray-300">{content.replace(/\[x\]\s*/, '')}</span>
                     </li>;
                   }
